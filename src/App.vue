@@ -2,27 +2,40 @@
 <template>
   <!-- eslint-disable -->
   <div class="app">
-    <PostForm @create="createPost" />
-    <PostList v-bind:posts="posts" @clear="clearPosts" />
+    <h1>Страница с постами</h1>
+    <my-button v-show="false" @click="fetchPosts"> Get Posts </my-button>
+    <my-button @click="showDialog" style="margin: 15px 0"
+      >Создать пост</my-button
+    >
+    <input type="text" name="" id="" v-model.trim="modificatorValue">
+    <my-dialog v-model:show="dialogVisible">
+      <PostForm @create="createPost" />
+    </my-dialog>
+
+    <PostList v-bind:posts="posts" @clear="clearPosts" @remove="removePost" />
   </div>
 </template>
 
 <script>
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
+import MyButton from "./components/UI/MyButton.vue";
+import MyDialog from "./components/UI/MyDialog.vue";
+import axios from 'axios';
 export default {
   components: {
     PostList,
     PostForm,
+    MyDialog,
+    MyButton,
   },
   data() {
     return {
       posts: [
-        { id: 1, title: "Javascript 1", body: "Description 1" },
-        { id: 2, title: "Javascript 2", body: "Description 1" },
-        { id: 3, title: "Javascript 3", body: "Description 1" },
-        { id: 4, title: "Javascript 4", body: "Description 1" },
+
       ],
+      dialogVisible: false,
+      modificatorValue: '',
     };
   },
   methods: {
@@ -31,9 +44,24 @@ export default {
     },
     createPost(post) {
       this.posts.push(post);
+      this.dialogVisible = false;
     },
     clearPosts() {
       this.posts = [];
+    },
+    removePost(post) {
+      this.posts = this.posts.filter((res) => res.id != post.id);
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    },
+    async fetchPosts() {
+      try {
+        const res = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+        this.posts = res.data;
+      }catch(error){
+        console.error(error);
+      }
     }
   },
 };

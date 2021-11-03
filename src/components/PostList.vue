@@ -1,43 +1,44 @@
 <template>
   <!-- eslint-disable -->
-  <div>
-    <button class="btn" @click="clearPosts"> Clear posts </button>
-    <div class="post" v-for="post in posts">
-      <div>
-        Title: <strong> {{ post.title }} </strong>
-      </div>
-      <div>
-        Description: <strong> {{ post.body }} </strong>
-      </div>
+  <div v-if="posts.length > 0">
+    <div><h3>Список пользователей</h3></div>
+    <div>
+      <button class="btn" @click="clearPosts">Clear posts</button>
+      <PostItem
+        :post="post"
+        v-for="post in posts"
+        :key="post.id"
+        @remove="$emit('remove', post)"
+      ></PostItem>
     </div>
   </div>
+  <div v-else><h3>Список пользователей пуст</h3></div>
 </template>
 
 <script>
+import PostItem from "../components/PostItem.vue";
 export default {
-    data () {
-        return {}
+  components: {
+    PostItem,
+  },
+  data() {
+    return {};
+  },
+  props: {
+    posts: {
+      type: Array,
+      required: true,
     },
-    props : {
-        posts: {
-            type: Array,
-            required: true,
-        }
+  },
+  methods: {
+    clearPosts() {
+      this.$emit("clear");
     },
-    methods : {
-        clearPosts(){
-            this.$emit('clear');
-        }
-    }
+  },
 };
 </script>
 
 <style scoped>
-.post {
-  padding: 15px;
-  border: 3px solid teal;
-  margin-top: 15px;
-}
 .btn {
   margin-top: 15px;
   padding: 10px 15px;
