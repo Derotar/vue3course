@@ -1,20 +1,20 @@
 <template>
   <!-- eslint-disable -->
-  <div>
-    <button class="btn" @click="clearPosts"> Clear posts </button>
-    <div class="post" v-for="post in posts">
-      <div>
-        Title: <strong> {{ post.title }} </strong>
-      </div>
-      <div>
-        Description: <strong> {{ post.body }} </strong>
-      </div>
-    </div>
+  <div v-if="posts.length > 0">
+    <MyButton style="margin-top: 15px" @click="clearPosts"> Clear posts </MyButton>
+    <PostItem v-for="post in posts" :post="post" :key="post.id" @remove="removePost">
+    </PostItem>
   </div>
+  <div v-else>No posts yet</div>
 </template>
 
 <script>
+import PostItem from "../components/PostItem.vue"
+import MyButton from "../components/UI/MyButton.vue"
 export default {
+  components : {
+    PostItem, MyButton,
+  },
     data () {
         return {}
     },
@@ -27,22 +27,15 @@ export default {
     methods : {
         clearPosts(){
             this.$emit('clear');
-        }
+        },
+        removePost(post) {
+          this.$emit('remove', post);
+          console.log(`remove in list ${post}`);
+        },
     }
 };
 </script>
 
 <style scoped>
-.post {
-  padding: 15px;
-  border: 3px solid teal;
-  margin-top: 15px;
-}
-.btn {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
-}
+
 </style>

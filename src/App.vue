@@ -3,7 +3,7 @@
   <!-- eslint-disable -->
   <div class="app">
     <PostForm @create="createPost" />
-    <PostList v-bind:posts="posts" @clear="clearPosts" />
+    <PostList v-bind:posts="posts" @clear="clearPosts" @remove="removePost"/>
   </div>
 </template>
 
@@ -34,6 +34,10 @@ export default {
     },
     clearPosts() {
       this.posts = [];
+    },
+    removePost(post){
+      this.posts = this.posts.filter(p => p.id != post.id);
+      console.log(this.posts);
     }
   },
 };
