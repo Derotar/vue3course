@@ -43,11 +43,7 @@ export default {
       };
     },
   },
-  watch : {
-    selectedSort(newValue) {
-      console.log(newValue);
-    }
-  }
+
 };
 </script>
 
