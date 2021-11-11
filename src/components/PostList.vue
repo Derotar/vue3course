@@ -30,20 +30,17 @@ export default {
       required: true,
     },
   },
-  methods: {
-    clearPosts() {
-      this.$emit("clear");
-    },
-  },
+    methods : {
+        clearPosts(){
+            this.$emit('clear');
+        },
+        removePost(post) {
+          this.$emit('remove', post);
+          console.log(`remove in list ${post}`);
+        },
+    }
 };
 </script>
 
 <style scoped>
-.btn {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
-}
 </style>
